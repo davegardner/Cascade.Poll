@@ -1,0 +1,64 @@
+﻿@model Cascade.Poll.ViewModels.PollDetailsViewModel
+@using Orchard.Mvc.Html;
+@using Orchard.Utility.Extensions;
+@{
+    Style.Require("jQueryUI");
+    Script.Require("ShapesBase");
+    Script.Require("jQueryUI_DatePicker");
+
+    Layout.Title = T("Create a poll").ToString();
+}
+
+
+@using (Html.BeginFormAntiForgeryPost())
+{
+    @Html.ValidationSummary()
+    <fieldset>
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.LabelFor(m => m.Question, T("Question"))
+        @Html.TextBoxFor(m => m.Question, new { @class = "text large" })
+
+        @Html.LabelFor(m => m.StartDate, T("Start date"))
+        @Html.EditorFor(m => m.StartDate)
+
+
+        @Html.LabelFor(m => m.EndDate, T("End date"))
+        @Html.EditorFor(m => m.EndDate)
+
+        @Html.LabelFor(m => m.MaxAnswers, T("Max answers"))
+        @Html.EditorFor(m => m.MaxAnswers)
+
+        @Html.LabelFor(m => m.PollState, T("Poll State"))
+        @Html.EnumDropDownListFor(m => m.PollState)
+    </fieldset>
+    <fieldset class="poll-answers">
+    @Html.EditorFor(m => m.Answers)
+    </fieldset>
+    <fieldset class="action">
+        <button id="addAnswer" type="button">@T("Add answer")</button>
+        <button class="primaryAction" type="submit" value="Save">@T("Create")</button>
+    </fieldset>    
+}
+@using(Script.Foot()) {
+<script type="text/javascript">
+//<![CDATA[
+    $(function () {
+        $("#addAnswer").click(function () {
+            $.ajax({
+                url: '@Url.Action("GetNewAnswer")',
+                success: function (data) {
+                    $(".poll-answers").append(data);
+                }
+            });
+        });
+        $(".poll-answers").on("click", "button.deleteRow", function () {
+            $(this).parents("div.answerRow:first").remove();
+            return false;
+        });
+        $('#@Html.FieldIdFor(m => m.StartDate)').datepicker({ showAnim: "" });
+        $('#@Html.FieldIdFor(m => m.EndDate)').datepicker({ showAnim: "" });
+    })
+    //]]>
+</script>
+}

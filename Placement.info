@@ -1,0 +1,9 @@
+﻿<Placement>
+  <Place Parts_Poll_Edit="Content:10"/>
+  <Match DisplayType="Detail">
+    <Place Parts_Poll="Content:10"/>
+  </Match>
+  <Match DisplayType="SummaryAdmin">
+      <Place Parts_Poll_Summary="Content:10"/>
+    </Match>
+</Placement>

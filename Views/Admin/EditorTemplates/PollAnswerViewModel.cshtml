@@ -1,0 +1,18 @@
+﻿@model Cascade.Poll.ViewModels.PollAnswerViewModel
+@using Cascade.Poll.Extensions;           
+
+<div class="answerRow">
+@using (Html.BeginCollectionItem("Answers"))
+{ 
+    @Html.LabelFor(m => m.Answer, T("Answer"))
+    @Html.HiddenFor(m => m.Id)
+    @Html.EditorFor(m => m.Answer, new { @class = "text medium" })
+
+    @*@Html.LabelFor(m => m.Votes, T("Votes"))*@
+    @Html.EditorFor(m => m.Votes)
+    @Model.Votes
+    <button class="deleteRow" type="button">@T("Delete")</button>
+    @Html.ValidationMessageFor(m => m.Answer)
+    @Html.ValidationMessageFor(m => m.Votes)
+}
+</div>

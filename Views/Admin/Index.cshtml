@@ -1,0 +1,65 @@
+﻿@model Cascade.Poll.ViewModels.PollsIndexViewModel
+
+@using Orchard.Mvc.Html;
+@using Orchard.Utility.Extensions;
+@using Cascade.Poll.Extensions;
+@using Cascade.Poll.ViewModels;
+
+@{
+    Style.Require("Admin");
+    Script.Require("ShapesBase");
+
+    Layout.Title = T("Polls").ToString();
+}
+
+@Html.ValidationSummary()
+@using (Html.BeginFormAntiForgeryPost())
+{ 
+    <fieldset class="bulk-actions">
+        <label for="publishActions">@T("Actions:")</label>
+        @Html.EnumDropDownList(Html.NameOf(m=>m.Options.BulkAction), Model.Options.BulkAction)
+        <button type="submit" name="submit.BulkEdit" value="@T("Apply")">@T("Apply")</button>
+    </fieldset>
+    <fieldset class="bulk-actions">
+        @Html.EnumDropDownList(Html.NameOf(m=>m.Options.Filter), Model.Options.Filter)
+        <button type="submit" name="submit.BulkFilter"value="@T("Filter")">@T("Filter")</button>
+    </fieldset>
+
+    <div class="manage">@Html.ActionLink(T("Add a poll").ToString(), "Create", new { }, new { @class = "button primaryAction" })</div>
+
+    <fieldset>
+        <table class="items" summary="@T("This is a table of the polls in your application")">
+            <thead>
+                <tr>
+                    <th scope="col">&nbsp;&darr;</th>
+                    <th scope="col">@T("Question")</th>
+                    <th scope="col">@T("Answers")</th>
+                    <th scope="col">@T("Status")</th>
+                    <th scope="col">@T("Actions")</th>
+                </tr>
+            </thead>
+            @{var pollIndex = 0;}
+            @foreach (var pollEntry in Model.Polls)
+            {
+                var pollClass = "";
+                <tr itemscope itemid="@pollEntry.Id" itemtype="http://orchardproject.net/data/Poll" class="@pollClass">
+                    <td>
+                        <input type="hidden" value="@pollEntry.Id" name="@Html.NameOf(m => m.Polls[pollIndex].Id)"/>
+                        <input type="checkbox" value="true" name="@Html.NameOf(m => m.Polls[pollIndex].IsChecked)"/>
+                    </td>
+                    <td>@pollEntry.Question</td>
+                    <td>@pollEntry.AnswersCount</td>
+                    <td>@pollEntry.PollState</td>
+                    <td>
+                        <div class="actions">
+                            <a href="@Url.Action("Edit", new {pollEntry.Id})" title="@T("Edit")">@T("Edit")</a>@T(" | ")
+                            <a href="@Url.Action("Delete", new { pollEntry.Id, returnUrl = ViewContext.RequestContext.HttpContext.Request.ToUrlString() })" itemprop="RemoveUrl UnsafeUrl">@T("Delete")</a>
+                        </div>
+                    </td>
+                </tr>
+                pollIndex = pollIndex + 1;
+            }
+        </table>
+        @Display(Model.Pager)
+    </fieldset>
+}
