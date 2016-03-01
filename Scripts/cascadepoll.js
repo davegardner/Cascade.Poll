@@ -17,7 +17,6 @@
                 data: $form.serialize(),
                 success: function (data) {
                     $(data).insertBefore($container).fadeIn();
-                    //alert(data);
                 }
             });
         });
