@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cascade.Poll.Models;
-using Orchard.ContentManagement.Handlers;
+using Orchard.ContentManagement.Utilities;
 using Orchard.Data;
 
 namespace Cascade.Poll.Handlers

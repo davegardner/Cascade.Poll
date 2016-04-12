@@ -2,8 +2,8 @@ Name: Poll
 AntiForgery: enabled
 Author: Dave Gardner
 Website: http://cascadepixels.com.au
-Version: 0.4
-OrchardVersion: 1.9
+Version: 0.5
+OrchardVersion: 1.10
 Description: Poll module for Orchard CMS
 Features:
     Cascade.Poll:
